@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: aventurapp:1.0
+    container_name: aventurapp-app
+    restart: unless-stopped
+    ports:
+      - 80:80
+    depends_on:
+      - db
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/keys/oauth-private.key:/var/www/html/storage/oauth-private.key
+      - ./docker/keys/oauth-public.key:/var/www/html/storage/oauth-public.key
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
+    environment:
+      DB_HOST: db
+      DB_DATABASE: aventurapp
+      DB_USERNAME: aventurapp
+      DB_PASSWORD: secret
+
+
+  db:
+    image: mysql:5.7
+    container_name: aventurapp-db
+    restart: unless-stopped
+    env_file:
+      - ./docker/bd/mysql.env
+    ports:
+        - 3306:3306
+    volumes:
+      - ./db_data:/var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: secret
+        MYSQL_DATABASE: aventurapp
+        MYSQL_USER: aventurapp
+        MYSQL_PASSWORD: secret
+
+
+
+
