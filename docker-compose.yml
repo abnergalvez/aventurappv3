@@ -15,8 +15,6 @@ services:
       - db
     volumes:
       - ./src:/var/www/html
-      - ./docker/keys/oauth-private.key:/var/www/html/storage/oauth-private.key
-      - ./docker/keys/oauth-public.key:/var/www/html/storage/oauth-public.key
       - /var/www/html/vendor
       - /var/www/html/node_modules
     environment:
